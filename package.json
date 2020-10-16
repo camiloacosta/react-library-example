@@ -1,0 +1,22 @@
+{
+  "name": "storybook-demo",
+  "version": "1.0.0",
+  "description": "StoryBook implementation with gh pages",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "webpack",
+    "clean-dist": "rm -rf ./dist",
+    "prebuild": "npm run clean-dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.12.1",
+    "@babel/preset-env": "^7.12.1",
+    "@babel/preset-react": "^7.12.1",
+    "babel-loader": "^8.1.0",
+    "webpack": "^5.1.3",
+    "webpack-cli": "^4.0.0"
+  }
+}

@@ -7,7 +7,9 @@
     "build": "webpack",
     "clean-dist": "rm -rf ./dist",
     "prebuild": "npm run clean-dist",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "author": "",
   "license": "ISC",
@@ -17,11 +19,16 @@
     "@babel/preset-react": "^7.12.1",
     "@emotion/core": "^10.0.35",
     "@emotion/styled": "^10.0.27",
-    "emotion-theming": "^10.0.27",
+    "@storybook/addon-actions": "^6.0.26",
+    "@storybook/addon-essentials": "^6.0.26",
+    "@storybook/addon-links": "^6.0.26",
+    "@storybook/react": "^6.0.26",
     "babel-loader": "^8.1.0",
+    "emotion-theming": "^10.0.27",
     "prop-types": "^15.7.2",
     "react": "^16.14.0",
-    "webpack": "^5.1.3",
+    "react-is": "^16.13.1",
+    "webpack": "^4.0.0",
     "webpack-cli": "^4.0.0"
   },
   "peerDependencies": {
@@ -29,5 +36,6 @@
     "@emotion/styled": "^10.0.27",
     "emotion-theming": "^10.0.27",
     "react": "^16.14.0"
-  }
+  },
+  "dependencies": {}
 }

@@ -1,0 +1,57 @@
+#!/usr/bin/env node
+
+const { spawn, execSync } = require('child_process')
+
+const spawnAsync =  (...args) => { 
+  return new Promise((resolve, reject) => {
+    const child = spawn.apply(null, args);
+    child.stdout.pipe(process.stdout)
+    child.stderr.pipe(process.stderr)
+
+    child.on('error', (error) => {
+      reject(error)
+    })
+
+    child.on('close', (code) => {
+      if (code !== 0) {
+        reject(`Failed command ${child.spawnargs.join(' ')} with code ${code}`)
+      }
+      resolve(code)
+    })
+  })
+}
+
+const parseRemoteUrl = (remote, token) => {
+  try {
+    const { protocol, host, pathname} = new URL(remote)
+    return `${protocol}//${token}@${host}${pathname}`
+  } catch {
+    const [host, pathname] = remote.substring(4, remote.indexOf('.git')).split(':')
+    return `https://${token}@${host}/${pathname}`
+  }
+}
+
+const run = async () => {
+  const remote = execSync('git config --get remote.origin.url').toString()
+  const branch = process.env.BRANCH
+  const token = process.env.GH_TOKEN
+  const remoteWithToken = parseRemoteUrl(remote, token)
+  const buildOutput = `docs/${branch}`
+  try {
+    await spawnAsync('npm', ['run', 'build-storybook', '--', '-o', buildOutput])
+    await spawnAsync('rm', ['-rf', `../${branch}`])
+    await spawnAsync('mv', [buildOutput, '../'])
+    await spawnAsync('git', ['fetch', 'origin', 'gh-pages'])
+    await spawnAsync('git', ['checkout', 'gh-pages'])
+    await spawnAsync('rm', ['-rf', `./${branch}`])
+    await spawnAsync('mv', [`../${branch}`, './'])
+    await spawnAsync('git', ['add', branch])
+    await spawnAsync('git', ['commit', '--amend', '--reuse-message=HEAD'])
+    await spawnAsync('git', ['push', remoteWithToken, 'gh-pages', '--force'])
+    await spawnAsync('git', ['checkout', '-'])
+  } catch (error) {
+    console.log('Upps', error)
+  }
+}
+
+run()

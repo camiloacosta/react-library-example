@@ -9,7 +9,9 @@
     "prebuild": "npm run clean-dist",
     "test": "echo \"Error: no test specified\" && exit 1",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook -o ./docs"
+    "build-storybook": "build-storybook",
+    "old-deploy-storybook": "storybook-to-ghpages -e=.docs --ci",
+    "deploy-storybook": "BRANCH=$(git rev-parse --abbrev-ref HEAD) ./bin/publish-script"
   },
   "author": "",
   "license": "ISC",
@@ -23,6 +25,7 @@
     "@storybook/addon-essentials": "^6.0.26",
     "@storybook/addon-links": "^6.0.26",
     "@storybook/react": "^6.0.26",
+    "@storybook/storybook-deployer": "^2.8.7",
     "babel-loader": "^8.1.0",
     "emotion-theming": "^10.0.27",
     "prop-types": "^15.7.2",
